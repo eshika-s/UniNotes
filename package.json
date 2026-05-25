@@ -1,0 +1,11 @@
+{
+  "name": "uninotes-app",
+  "version": "1.0.0",
+  "description": "UniNotes fullstack application",
+  "scripts": {
+    "install-all": "cd backend && npm install && cd ../UniNotes && npm install",
+    "build": "cd UniNotes && npm run build",
+    "start": "cd backend && node server.js",
+    "dev": "cd backend && npm run dev"
+  }
+}
