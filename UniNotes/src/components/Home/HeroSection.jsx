@@ -1,182 +1,305 @@
 import { Link } from "react-router-dom";
-import { SparkleIcon, LightBulbIcon, PenIcon, DocumentIcon, OpenBookIcon, MagicWandIcon } from "./Icons";
-import { useEffect, useRef } from "react";
-
-const floatingItems = [
-  { icon: <SparkleIcon />, style: { top: "18%", left: "8%" }, color: "#e95e86", delay: "0s", size: 1 },
-  { icon: <LightBulbIcon />, style: { top: "38%", left: "5%" }, color: "#93c5fd", delay: "1s", size: 1.2 },
-  { icon: <PenIcon />, style: { top: "68%", left: "12%" }, color: "#fcd34d", delay: "2s", size: 0.9 },
-  { icon: <DocumentIcon />, style: { top: "50%", right: "8%" }, color: "#fb923c", delay: "0.5s", size: 1.1 },
-  { icon: <OpenBookIcon />, style: { top: "22%", right: "12%" }, color: "#a78bfa", delay: "1.5s", size: 1 },
-  { icon: <MagicWandIcon />, style: { top: "75%", right: "18%" }, color: "#6ee7b7", delay: "2.5s", size: 0.85 },
-];
+import { useState, useEffect } from "react";
+import API from "../../services/api";
 
 export default function HeroSection() {
-  const titleRef = useRef(null);
+  const [stats, setStats] = useState({ totalNotes: 43, totalUniversities: 13, totalUsers: 9 });
+
+  useEffect(() => {
+    API.get('/api/stats')
+      .then(res => {
+        if (res.data) {
+          setStats({
+            totalNotes: res.data.totalNotes || 43,
+            totalUniversities: res.data.totalUniversities || 13,
+            totalUsers: res.data.totalUsers || 9
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div
       className="mobile-hero"
       style={{
         position: "relative",
-        padding: "9rem 20px 7rem",
-        textAlign: "center",
+        padding: "8rem 4rem 4rem",
         overflow: "hidden",
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor: "var(--bg)"
       }}
     >
-      {/* Ambient gradient blobs */}
-      <div style={{
-        position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden"
-      }}>
+      {/* Background soft mesh gradients */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
         <div style={{
-          position: "absolute", top: "10%", left: "20%",
-          width: "500px", height: "500px",
-          background: "radial-gradient(circle, rgba(233,94,134,0.12) 0%, transparent 70%)",
-          borderRadius: "50%", filter: "blur(40px)"
-        }} />
-        <div style={{
-          position: "absolute", bottom: "15%", right: "15%",
-          width: "400px", height: "400px",
-          background: "radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%)",
-          borderRadius: "50%", filter: "blur(40px)"
-        }} />
-        {/* Grid lines subtle */}
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
-          backgroundSize: "60px 60px"
-        }} />
-      </div>
-
-      {/* Floating Icons */}
-      <div className="hide-on-mobile" style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-        {floatingItems.map((item, i) => (
-          <div
-            key={i}
-            style={{
-              position: "absolute",
-              ...item.style,
-              color: item.color,
-              opacity: 0.55,
-              animation: `float 5s ease-in-out ${item.delay} infinite`,
-              transform: `scale(${item.size})`,
-              filter: `drop-shadow(0 0 8px ${item.color}55)`,
-            }}
-          >
-            {item.icon}
-          </div>
-        ))}
-      </div>
-
-      {/* Badge */}
-      <div className="badge badge-primary scale-in" style={{ marginBottom: "1.5rem" }}>
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
-          <circle cx="5" cy="5" r="5" opacity="0.5" />
-          <circle cx="5" cy="5" r="2.5" />
-        </svg>
-        India's #1 Student Notes Platform
-      </div>
-
-      {/* Main heading */}
-      <h1
-        ref={titleRef}
-        className="fade-in-up"
-        style={{
-          fontSize: "clamp(3.5rem, 8vw, 6.5rem)",
-          fontWeight: 900,
-          letterSpacing: "-2px",
-          lineHeight: 1.05,
-          marginBottom: "1.5rem",
-          maxWidth: "900px",
-        }}
-      >
-        <span style={{ color: "#ffffff" }}>Uni</span>
-        <span style={{ color: "#e95e86", filter: "drop-shadow(0 0 30px rgba(233,94,134,0.5))" }}>Notes</span>
-      </h1>
-
-      {/* Subheading */}
-      <p
-        className="fade-in-up"
-        style={{
-          color: "#94a3b8",
-          fontSize: "clamp(1rem, 2.5vw, 1.3rem)",
-          maxWidth: "600px",
-          marginBottom: "0.75rem",
-          fontWeight: 400,
-          lineHeight: 1.7,
-          animationDelay: "0.15s"
-        }}
-      >
-        Discover, share and ace your exams with premium notes from top institutions across India.
-      </p>
-
-      {/* Stats row */}
-      <div
-        className="fade-in-up hide-on-mobile"
-        style={{
-          display: "flex",
-          gap: "2.5rem",
-          marginBottom: "3rem",
-          marginTop: "1rem",
-          animationDelay: "0.3s"
-        }}
-      >
-        {[
-          { val: "10K+", label: "Notes" },
-          { val: "50+", label: "Institutions" },
-          { val: "5K+", label: "Students" },
-        ].map((s, i) => (
-          <div key={i} style={{ textAlign: "center" }}>
-            <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "#ffffff" }}>{s.val}</div>
-            <div style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" }}>{s.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* CTA Buttons */}
-      <div
-        className="fade-in-up"
-        style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center", animationDelay: "0.4s" }}
-      >
-        <Link to="/notes">
-          <button className="btn btn-primary" style={{ fontSize: "1rem", padding: "0.9rem 2.5rem" }}>
-            Browse Notes
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-            </svg>
-          </button>
-        </Link>
-        <Link to="/courses">
-          <button className="btn btn-outline" style={{ fontSize: "1rem", padding: "0.9rem 2.5rem" }}>
-            Explore Courses
-          </button>
-        </Link>
-      </div>
-
-      {/* Scroll indicator */}
-      <div
-        className="hide-on-mobile"
-        style={{
           position: "absolute",
-          bottom: "2.5rem",
-          left: "50%",
-          transform: "translateX(-50%)",
+          top: "-20%", left: "-10%",
+          width: "60%", height: "100%",
+          background: "radial-gradient(circle, rgba(193, 68, 14, 0.04) 0%, transparent 70%)",
+        }} />
+        <div style={{
+          position: "absolute",
+          bottom: "10%", right: "-10%",
+          width: "60%", height: "80%",
+          background: "radial-gradient(circle, rgba(28, 20, 16, 0.03) 0%, transparent 70%)",
+        }} />
+      </div>
+
+      {/* Grid container */}
+      <div
+        className="mobile-flex-col"
+        style={{
+          position: "relative",
+          zIndex: 10,
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           alignItems: "center",
-          gap: "0.4rem",
-          opacity: 0.35,
-          animation: "float 2.5s ease-in-out infinite"
+          justifyContent: "space-between",
+          gap: "4rem",
+          width: "100%",
+          maxWidth: "100%",
+          flexWrap: "wrap"
         }}
       >
-        <div style={{ fontSize: "0.65rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "#64748b" }}>scroll</div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2">
-          <polyline points="6 9 12 15 18 9" />
+        {/* Left Column: Text Content & Actions */}
+        <div style={{ flex: "1 1 500px", maxWidth: "580px" }}>
+          {/* Eyebrow badge */}
+          <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.4rem",
+            padding: "0.35rem 0.9rem",
+            borderRadius: "0px",
+            background: "var(--primary-subtle)",
+            border: "1px solid rgba(193, 68, 14, 0.25)",
+            color: "var(--primary)",
+            fontSize: "0.78rem",
+            fontWeight: 600,
+            letterSpacing: "0.01em",
+            marginBottom: "1.75rem",
+          }}>
+            <span style={{ width: "6px", height: "6px", borderRadius: "0px", background: "var(--primary)", display: "inline-block" }} />
+            For Indian engineering students
+          </div>
+
+          {/* Heading */}
+          <h1 style={{
+            fontSize: "clamp(2.5rem, 5.5vw, 4.2rem)",
+            fontWeight: 800,
+            lineHeight: 1.1,
+            letterSpacing: "-1.5px",
+            color: "var(--text)",
+            marginBottom: "1.5rem",
+            fontFamily: "Inter, system-ui, sans-serif"
+          }}>
+            Notes from students who <span style={{ color: "var(--primary)" }}>actually</span> scored.
+          </h1>
+
+          {/* Subheading */}
+          <p style={{
+            color: "var(--text-muted)",
+            fontSize: "1.02rem",
+            lineHeight: 1.65,
+            marginBottom: "2rem",
+            maxWidth: "500px"
+          }}>
+            Real notes from real students at IITs, NITs, and BITS — not generic PDFs. Browse by subject, semester, or institution.
+          </p>
+
+          {/* CTA buttons */}
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <Link to="/notes" style={{ textDecoration: "none" }}>
+              <button
+                className="btn btn-primary"
+                style={{
+                  padding: "0.75rem 1.6rem",
+                  borderRadius: "0px",
+                  fontSize: "0.88rem",
+                  fontWeight: 600,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  cursor: "pointer",
+                  boxShadow: "0 2px 12px var(--primary-glow)"
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                Browse notes
+              </button>
+            </Link>
+            <Link to="/upload" style={{ textDecoration: "none" }}>
+              <button
+                className="btn btn-outline"
+                style={{
+                  padding: "0.75rem 1.6rem",
+                  borderRadius: "0px",
+                  border: "1px solid var(--border)",
+                  color: "var(--text)",
+                  fontSize: "0.88rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  transition: "all 0.15s ease"
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = "var(--primary)";
+                  e.currentTarget.style.color = "var(--primary)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = "var(--border)";
+                  e.currentTarget.style.color = "var(--text)";
+                }}
+              >
+                Upload yours
+              </button>
+            </Link>
+          </div>
+
+          {/* Overlapping Avatars row */}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "2rem" }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {[
+                { label: "RS", bg: "#2563eb" },
+                { label: "PM", bg: "#16a34a" },
+                { label: "AK", bg: "#b91c1c" },
+                { label: "SN", bg: "#6d28d9" }
+              ].map((av, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "0px",
+                    background: av.bg,
+                    border: "2px solid var(--bg)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "0.62rem",
+                    fontWeight: 700,
+                    color: "white",
+                    marginLeft: i > 0 ? "-8px" : "0",
+                    zIndex: 4 - i
+                  }}
+                >
+                  {av.label}
+                </div>
+              ))}
+            </div>
+            <span style={{ fontSize: "0.82rem", color: "var(--text-muted)", fontWeight: 400 }}>
+              <strong style={{ color: "var(--text)", fontWeight: 600 }}>{stats.totalNotes} notes</strong> shared by {stats.totalUsers} students so far — growing daily
+            </span>
+          </div>
+        </div>
+
+        {/* Right Column: Platform Preview Panel */}
+        <div style={{ flex: "1 1 380px", maxWidth: "440px", width: "100%" }}>
+          <div style={{
+            background: "var(--bg-card)",
+            border: "1px solid var(--border)",
+            borderRadius: "0px",
+            padding: "1.75rem",
+            boxShadow: "var(--shadow-lg)"
+          }}>
+            {/* Header */}
+            <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)", letterSpacing: "0.08em", marginBottom: "1.25rem" }}>
+              LIVE FROM THE PLATFORM
+            </div>
+
+            {/* Note items */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginBottom: "1.25rem" }}>
+              {[
+                { title: "DSA — IIM Ahmedabad Notes", tag: "CS", author: "Rohan Gupta · CS201" },
+                { title: "DBMS & SQL Quick Reference", tag: "DB", author: "Aman Kumar · G.L Bajaj" },
+                { title: "Aptitude & Critical Thinking", tag: "APT", author: "Eshika Shukla · IIT Bhubaneswar" }
+              ].map((note, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: "rgba(28, 20, 16, 0.03)",
+                    border: "1px solid rgba(28, 20, 16, 0.05)",
+                    borderRadius: "0px",
+                    padding: "0.85rem 1rem",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                  }}
+                >
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: 600, color: "var(--text)" }}>{note.title}</h4>
+                    <p style={{ margin: "0.2rem 0 0", fontSize: "0.72rem", color: "var(--text-muted)" }}>{note.author}</p>
+                  </div>
+                  <span style={{
+                    background: "var(--primary-subtle)",
+                    border: "1px solid rgba(193, 68, 14, 0.15)",
+                    color: "var(--primary)",
+                    padding: "2px 7px",
+                    borderRadius: "0px",
+                    fontSize: "0.68rem",
+                    fontWeight: 700
+                  }}>
+                    {note.tag}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Platform Stats Row */}
+            <div style={{ display: "flex", gap: "0.6rem", marginBottom: "1rem" }}>
+              {[
+                { val: stats.totalNotes, label: "notes" },
+                { val: stats.totalUniversities, label: "institutions" },
+                { val: stats.totalUsers, label: "students" }
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: "rgba(28, 20, 16, 0.03)",
+                    border: "1px solid rgba(28, 20, 16, 0.05)",
+                    borderRadius: "0px",
+                    padding: "0.6rem 0.2rem",
+                    textAlign: "center",
+                    flex: 1
+                  }}
+                >
+                  <h4 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "var(--text)" }}>{stat.val}</h4>
+                  <p style={{ margin: 0, fontSize: "0.62rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.04em" }}>{stat.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom Caption */}
+            <div style={{ textAlign: "center", fontSize: "0.72rem", color: "var(--text-muted)" }}>
+              ↑ Show a real preview of your app, not just numbers
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Down arrow icon pointer */}
+      <div style={{
+        position: "absolute",
+        bottom: "1.5rem",
+        left: "50%",
+        transform: "translateX(-50%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "36px",
+        height: "36px",
+        borderRadius: "0px",
+        border: "1px solid var(--border)",
+        color: "var(--text-muted)",
+        background: "var(--bg-card)"
+      }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" />
         </svg>
       </div>
     </div>

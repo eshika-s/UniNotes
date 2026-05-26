@@ -45,7 +45,6 @@ const courseSubjects = {
   ],
 };
 
-
 const courseTitles = {
   cse: "Computer Science",
   ece: "Electronics & Comm.",
@@ -63,27 +62,30 @@ function Subjects() {
   if (!subjects.length) {
     return (
       <div className="container" style={{ textAlign: "center", marginTop: "4rem" }}>
-        <h2>Course not found</h2>
-        <Link to="/courses" style={{ color: "var(--primary-color)" }}>Go back to Courses</Link>
+        <h2 style={{ color: "var(--text)" }}>Course not found</h2>
+        <Link to="/courses" style={{ color: "var(--primary)" }}>Go back to Courses</Link>
       </div>
     );
   }
 
   return (
-    <div className="container fade-in">
+    <div className="container fade-in" style={{ paddingTop: "1rem" }}>
       <div style={{ marginBottom: "3rem", display: "flex", alignItems: "center", gap: "1rem" }}>
         <Link to="/courses" style={{
           padding: "0.5rem 1rem",
-          background: "rgba(255,255,255,0.1)",
+          background: "rgba(28, 20, 16, 0.04)",
+          border: "1px solid var(--border)",
           borderRadius: "8px",
           display: "inline-flex",
           alignItems: "center",
           fontWeight: 600,
+          color: "var(--text)",
+          textDecoration: "none"
         }}>
           ← Back
         </Link>
-        <h2 style={{ fontSize: "2rem", margin: 0 }}>
-          {title} <span className="gradient-text">Subjects</span>
+        <h2 style={{ fontSize: "2rem", margin: 0, color: "var(--text)" }}>
+          {title} <span className="gradient-text" style={{ background: "var(--gradient-primary)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Subjects</span>
         </h2>
       </div>
 
@@ -92,36 +94,29 @@ function Subjects() {
         gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
         gap: '1.5rem'
       }}>
-        {subjects.map((sub, index) => (
-          <Link to={`/notes?subject=${encodeURIComponent(sub.name)}`} key={sub.id} className="fade-in" style={{ animationDelay: `${index * 0.05}s` }}>
-            <div className="glass-panel" style={{
-              padding: '1.5rem',
-              borderRadius: '12px',
-              transition: 'transform 0.2s',
-              cursor: 'pointer',
-              height: '100%'
-            }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.borderColor = 'rgba(233, 94, 134, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.borderColor = 'var(--border-color)';
+        {subjects.map((sub) => (
+          <Link to={`/notes?subject=${encodeURIComponent(sub.name)}`} key={sub.id} className="fade-in">
+            <div
+              className="card"
+              style={{
+                padding: '1.5rem',
+                borderRadius: '12px',
+                height: '100%'
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.8rem' }}>
-                <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#f8fafc' }}>{sub.name}</h3>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--text)' }}>{sub.name}</h3>
                 <span style={{
-                  background: 'rgba(233, 94, 134, 0.2)',
-                  color: '#fca5a5',
+                  background: 'var(--primary-subtle)',
+                  color: 'var(--primary)',
+                  border: '1px solid rgba(193, 68, 14, 0.15)',
                   padding: '2px 8px',
                   borderRadius: '6px',
                   fontSize: '0.75rem',
                   fontWeight: 600
                 }}>{sub.code}</span>
               </div>
-              <p style={{ margin: 0, fontSize: '0.9rem', color: '#94a3b8' }}>{sub.desc}</p>
+              <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>{sub.desc}</p>
             </div>
           </Link>
         ))}

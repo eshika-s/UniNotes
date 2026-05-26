@@ -138,7 +138,7 @@ const getThemeColor = (type) => {
     case "error": return "#ef4444"; // Red
     case "warning": return "#f59e0b"; // Amber
     case "info":
-    default: return "#e95e86"; // Pink (Primary)
+    default: return "#C1440E"; // Terracotta (Primary)
   }
 };
 
@@ -148,7 +148,7 @@ const getBorderColor = (type) => {
     case "error": return "rgba(239, 68, 68, 0.4)";
     case "warning": return "rgba(245, 158, 11, 0.4)";
     case "info":
-    default: return "rgba(233, 94, 134, 0.4)";
+    default: return "rgba(193, 68, 14, 0.4)";
   }
 };
 
@@ -158,7 +158,7 @@ const getGlowColor = (type) => {
     case "error": return "rgba(239, 68, 68, 0.15)";
     case "warning": return "rgba(245, 158, 11, 0.15)";
     case "info":
-    default: return "rgba(233, 94, 134, 0.15)";
+    default: return "rgba(193, 68, 14, 0.15)";
   }
 };
 

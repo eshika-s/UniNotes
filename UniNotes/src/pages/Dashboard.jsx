@@ -95,246 +95,317 @@ function Dashboard() {
     : 'U';
 
   return (
-    <div style={{ minHeight: "100vh", background: "#000", paddingBottom: "4rem" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", paddingBottom: "4rem" }}>
 
       {/* Page header */}
       <div style={{
-        background: "linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(233,94,134,0.1) 100%)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-        padding: "3rem 2rem 2.5rem",
+        borderBottom: "1px solid var(--border)",
+        padding: "2.5rem 2rem 2rem",
       }}>
-        <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1.5rem" }}>
+        <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1.25rem" }}>
           <div>
-            <div className="badge badge-primary" style={{ marginBottom: "0.75rem" }}>📊 Dashboard</div>
-            <h1 style={{ fontSize: "2rem", fontWeight: 800, margin: 0, color: "#f1f5f9" }}>
-              My <span style={{ color: "#e95e86" }}>Notes</span>
+            <h1 style={{ fontSize: "1.75rem", fontWeight: 800, margin: 0, color: "var(--text)" }}>
+              Dashboard
             </h1>
-            <p style={{ color: "#64748b", margin: "0.4rem 0 0", fontSize: "0.9rem" }}>
-              Manage, edit, and track your uploaded notes
+            <p style={{ color: "var(--text-muted)", margin: "0.3rem 0 0", fontSize: "0.88rem" }}>
+              Manage and track your uploaded notes
             </p>
           </div>
-          {/* Profile mini-card */}
           <div style={{
-            display: "flex", alignItems: "center", gap: "1rem",
-            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
-            borderRadius: "16px", padding: "1rem 1.5rem",
+            display: "flex", alignItems: "center", gap: "0.75rem",
+            background: "var(--bg-card)", border: "1px solid var(--border)",
+            borderRadius: "0px", padding: "0.75rem 1rem",
           }}>
             <div style={{
-              width: "48px", height: "48px", borderRadius: "50%", flexShrink: 0,
-              background: "linear-gradient(135deg, #e95e86, #6366f1)",
+              width: "36px", height: "36px", borderRadius: "0px", flexShrink: 0,
+              background: "var(--primary)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              fontWeight: 800, fontSize: "1rem", color: "white",
+              fontWeight: 700, fontSize: "0.82rem", color: "white",
             }}>{initials}</div>
             <div>
-              <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#f1f5f9" }}>{user.name || "User"}</div>
-              <div style={{ fontSize: "0.78rem", color: "#64748b" }}>{user.email || ""}</div>
+              <div style={{ fontWeight: 600, fontSize: "0.88rem", color: "var(--text)" }}>{user.name || "User"}</div>
+              <div style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>{user.email || ""}</div>
             </div>
             <Link to="/profile" style={{
-              padding: "0.45rem 1rem", borderRadius: "999px", fontSize: "0.8rem", fontWeight: 600,
-              background: "rgba(233,94,134,0.12)", border: "1px solid rgba(233,94,134,0.3)",
-              color: "#e95e86", textDecoration: "none", whiteSpace: "nowrap",
+              padding: "0.35rem 0.75rem", borderRadius: "0px", fontSize: "0.75rem", fontWeight: 600,
+              background: "var(--primary-subtle)", border: "1px solid rgba(193, 68, 14, 0.15)",
+              color: "var(--primary)", textDecoration: "none", whiteSpace: "nowrap",
             }}>
-              Edit Profile
+              Edit
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="container" style={{ paddingTop: "2rem" }}>
+      <div className="container" style={{ paddingTop: "1.5rem" }}>
 
-        {/* Stats bar */}
+        {/* Stats */}
         <div style={{
-          display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-          gap: "1rem", marginBottom: "2rem",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          gap: "1.5rem", flexWrap: "wrap", marginBottom: "2.5rem",
+          background: "var(--bg-card)", border: "1px solid var(--border)",
+          borderRadius: "0px", padding: "2rem", boxShadow: "var(--shadow-sm)"
         }}>
           {[
-            { label: "My Uploads", value: notes.length, color: "#e95e86", icon: "📄" },
-            { label: "Total Notes (Platform)", value: stats.totalNotes, color: "#6366f1", icon: "📚" },
-            { label: "Institutions", value: stats.totalUniversities, color: "#10b981", icon: "🏛️" },
-            { label: "Students", value: stats.totalUsers, color: "#f59e0b", icon: "👥" },
+            { label: "My uploads", value: notes.length, color: "var(--primary)" },
+            { label: "Platform notes", value: stats.totalNotes, color: "#2563eb" },
+            { label: "Institutions", value: stats.totalUniversities, color: "#16a34a" },
+            { label: "Students", value: stats.totalUsers, color: "#d97706" },
           ].map((s, i) => (
-            <div key={i} style={{
-              background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)",
-              borderRadius: "14px", padding: "1.2rem 1.4rem",
-              borderLeft: `3px solid ${s.color}`,
-            }}>
-              <div style={{ fontSize: "1.4rem", marginBottom: "0.4rem" }}>{s.icon}</div>
-              <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "#f1f5f9" }}>{s.value}</div>
-              <div style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 500 }}>{s.label}</div>
+            <div key={i} style={{ flex: 1, minWidth: "120px", display: "flex", flexDirection: "column", gap: "0.2rem" }}>
+              <div style={{ fontSize: "2rem", fontWeight: 800, color: "var(--text)", lineHeight: 1.1 }}>{s.value}</div>
+              <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: 500, marginBottom: "0.5rem" }}>{s.label}</div>
+              <div style={{ width: "32px", height: "4px", background: s.color, borderRadius: "0px" }} />
             </div>
           ))}
         </div>
 
-        {/* Controls row */}
-        <div className="glass-panel" style={{ padding: "1.2rem 1.5rem", borderRadius: "14px", marginBottom: "2rem", display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", flex: 1 }}>
-            <div style={{ flex: "1 1 180px" }}>
-              <label style={{ display: "block", marginBottom: "0.4rem", color: "#94a3b8", fontSize: "0.8rem", fontWeight: 500 }}>Filter by Subject</label>
-              <select value={filterSubject} onChange={(e) => setFilterSubject(e.target.value)}
-                style={{ width: "100%", padding: "0.65rem 0.9rem", borderRadius: "10px", background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.1)", color: "white", outline: "none", fontSize: "0.9rem" }}>
-                <option value="">All Subjects</option>
+        {/* Controls */}
+        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "end", justifyContent: "space-between", marginBottom: "1.5rem" }}>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", flex: 1 }}>
+            <div style={{ flex: "1 1 160px" }}>
+              <label className="form-label">Subject</label>
+              <select value={filterSubject} onChange={(e) => setFilterSubject(e.target.value)} className="form-select">
+                <option value="">All</option>
                 {["Computer Science (CSE)", "Information Tech (IT)", "Mechanical Engg. (ME)", "Electronics (ECE)", "Civil Engg. (CE)", "Electrical (EE)", "Common"]
                   .map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
-            <div style={{ flex: "1 1 180px" }}>
-              <label style={{ display: "block", marginBottom: "0.4rem", color: "#94a3b8", fontSize: "0.8rem", fontWeight: 500 }}>Sort By</label>
-              <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}
-                style={{ width: "100%", padding: "0.65rem 0.9rem", borderRadius: "10px", background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.1)", color: "white", outline: "none", fontSize: "0.9rem" }}>
+            <div style={{ flex: "1 1 160px" }}>
+              <label className="form-label">Sort</label>
+              <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} className="form-select">
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
               </select>
             </div>
           </div>
           <Link to="/upload" style={{
-            display: "inline-flex", alignItems: "center", gap: "0.5rem",
-            padding: "0.7rem 1.5rem", background: "#e95e86",
-            color: "white", borderRadius: "10px", textDecoration: "none",
-            fontWeight: 700, fontSize: "0.9rem",
-            boxShadow: "0 4px 14px rgba(233,94,134,0.35)",
-            transition: "all 0.2s",
-          }}
-            onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px)"}
-            onMouseLeave={e => e.currentTarget.style.transform = "none"}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Upload New
+            display: "inline-flex", alignItems: "center", gap: "0.4rem",
+            padding: "0.6rem 1.2rem", background: "var(--primary)",
+            color: "white", borderRadius: "0px", textDecoration: "none",
+            fontWeight: 600, fontSize: "0.85rem",
+          }}>
+            + Upload
           </Link>
         </div>
 
         {/* Table */}
         {loading ? (
-          <div style={{ textAlign: "center", padding: "4rem", color: "#64748b" }}>
-            <div style={{ fontSize: "2.5rem", marginBottom: "1rem", animation: "pulse 1.5s infinite" }}>📚</div>
+          <div style={{ textAlign: "center", padding: "3.5rem", color: "var(--text-muted)" }}>
             <p>Loading your notes...</p>
           </div>
         ) : filteredNotes.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "5rem 2rem", background: "rgba(255,255,255,0.02)", borderRadius: "20px", border: "1px solid rgba(255,255,255,0.06)" }}>
-            <div style={{ fontSize: "3.5rem", marginBottom: "1rem" }}>📝</div>
-            <h3 style={{ color: "#f1f5f9", marginBottom: "0.5rem" }}>No notes yet</h3>
-            <p style={{ color: "#64748b", marginBottom: "2rem" }}>Share your knowledge by uploading your first note!</p>
-            <Link to="/upload" className="btn btn-primary">Upload Your First Note</Link>
+          <div style={{ textAlign: "center", padding: "4rem 2rem", background: "var(--bg-card)", borderRadius: "0px", border: "1px solid var(--border)" }}>
+            <h3 style={{ color: "var(--text)", marginBottom: "0.4rem", fontSize: "1.1rem" }}>No notes yet</h3>
+            <p style={{ color: "var(--text-muted)", marginBottom: "1.5rem", fontSize: "0.88rem" }}>Share your knowledge by uploading your first note!</p>
+            <Link to="/upload" className="btn btn-primary" style={{ borderRadius: "0px" }}>Upload Your First Note</Link>
           </div>
         ) : (
-          <div style={{ overflowX: "auto", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.07)" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", minWidth: "600px" }}>
-              <thead>
-                <tr style={{ background: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-                  {["Title", "Subject", "University", "Date", "Actions"].map((h, i) => (
-                    <th key={i} style={{ padding: "1rem 1.2rem", color: "#64748b", fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", textAlign: i === 4 ? "right" : "left" }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredNotes.map((note, idx) => (
-                  <tr key={note._id} style={{ borderBottom: idx !== filteredNotes.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none", transition: "background 0.2s" }}
-                    onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.02)"}
-                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
-                    <td style={{ padding: "1rem 1.2rem", maxWidth: "220px" }}>
-                      {note.fileUrl ? (
-                        <a href={`${API_BASE_URL}${note.fileUrl}`} target="_blank" rel="noopener noreferrer"
-                          style={{ color: "#e95e86", textDecoration: "none", fontWeight: 600, fontSize: "0.9rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{note.title}</span>
-                        </a>
-                      ) : (
-                        <span style={{ color: "#f1f5f9", fontWeight: 600, fontSize: "0.9rem" }}>{note.title}</span>
-                      )}
-                    </td>
-                    <td style={{ padding: "1rem 1.2rem", color: "#94a3b8", fontSize: "0.85rem", maxWidth: "160px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{note.subject || "—"}</td>
-                    <td style={{ padding: "1rem 1.2rem", color: "#94a3b8", fontSize: "0.85rem" }}>{note.university || "—"}</td>
-                    <td style={{ padding: "1rem 1.2rem", color: "#475569", fontSize: "0.82rem", whiteSpace: "nowrap" }}>
-                      {new Date(note.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                    </td>
-                    <td style={{ padding: "1rem 1.2rem", textAlign: "right" }}>
-                      <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
-                        <button onClick={() => openEdit(note)} style={{
-                          background: "rgba(99,102,241,0.15)", color: "#818cf8",
-                          border: "1px solid rgba(99,102,241,0.3)", padding: "0.4rem 0.9rem",
-                          borderRadius: "8px", cursor: "pointer", fontSize: "0.8rem", fontWeight: 600,
-                          transition: "all 0.2s",
-                        }}
-                          onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.3)"}
-                          onMouseLeave={e => e.currentTarget.style.background = "rgba(99,102,241,0.15)"}>
-                          ✏️ Edit
-                        </button>
-                        <button onClick={() => handleDelete(note._id)} style={{
-                          background: "rgba(239,68,68,0.12)", color: "#f87171",
-                          border: "1px solid rgba(239,68,68,0.25)", padding: "0.4rem 0.9rem",
-                          borderRadius: "8px", cursor: "pointer", fontSize: "0.8rem", fontWeight: 600,
-                          transition: "all 0.2s",
-                        }}
-                          onMouseEnter={e => e.currentTarget.style.background = "rgba(239,68,68,0.25)"}
-                          onMouseLeave={e => e.currentTarget.style.background = "rgba(239,68,68,0.12)"}>
-                          🗑️ Delete
-                        </button>
-                      </div>
-                    </td>
+          <div style={{ background: "var(--bg-card)", borderRadius: "0px", border: "1px solid var(--border)", overflow: "hidden" }}>
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", minWidth: "580px" }}>
+                <thead>
+                  <tr style={{ background: "rgba(28, 20, 16, 0.02)", borderBottom: "1px solid var(--border)" }}>
+                    {["Title", "Subject", "University", "Status", "Actions"].map((h, i) => (
+                      <th key={i} style={{ padding: "0.85rem 1rem", color: "var(--text-muted)", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", textAlign: i === 4 ? "right" : "left" }}>{h}</th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filteredNotes.map((note, idx) => (
+                    <tr key={note._id} style={{ borderBottom: idx !== filteredNotes.length - 1 ? "1px solid var(--border)" : "none", transition: "background 0.15s" }}
+                      onMouseEnter={e => e.currentTarget.style.background = "rgba(28, 20, 16, 0.015)"}
+                      onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                      <td style={{ padding: "0.85rem 1rem", maxWidth: "200px" }}>
+                        {note.fileUrl ? (
+                          <a href={`${API_BASE_URL}${note.fileUrl}`} target="_blank" rel="noopener noreferrer"
+                            style={{ color: "var(--primary)", textDecoration: "none", fontWeight: 600, fontSize: "0.85rem" }}>
+                            <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", display: "block" }}>{note.title}</span>
+                          </a>
+                        ) : (
+                          <span style={{ color: "var(--text)", fontWeight: 600, fontSize: "0.85rem" }}>{note.title}</span>
+                        )}
+                      </td>
+                      <td style={{ padding: "0.85rem 1rem" }}>
+                        <span style={{
+                          background: "rgba(28, 20, 16, 0.04)",
+                          border: "1px solid var(--border)",
+                          color: "var(--text)",
+                          padding: "3px 8px",
+                          borderRadius: "0px",
+                          fontSize: "0.72rem",
+                          fontWeight: 700
+                        }}>
+                          {note.subject ? note.subject.split(' ')[0] : "CSE"}
+                        </span>
+                      </td>
+                      <td style={{ padding: "0.85rem 1rem", color: "var(--text-muted)", fontSize: "0.82rem" }}>{note.university || "—"}</td>
+                      <td style={{ padding: "0.85rem 1rem" }}>
+                        <span style={{
+                          background: "rgba(16, 185, 129, 0.08)",
+                          border: "1px solid rgba(16, 185, 129, 0.15)",
+                          color: "#10b981",
+                          padding: "3px 8px",
+                          borderRadius: "0px",
+                          fontSize: "0.72rem",
+                          fontWeight: 700
+                        }}>
+                          Live
+                        </span>
+                      </td>
+                      <td style={{ padding: "0.85rem 1rem", textAlign: "right" }}>
+                        <div style={{ display: "flex", gap: "0.35rem", justifyContent: "flex-end" }}>
+                          <button onClick={() => openEdit(note)} style={{
+                            background: "var(--primary-subtle)", color: "var(--primary)",
+                            border: "1px solid rgba(193, 68, 14, 0.15)", padding: "0.35rem 0.75rem",
+                            borderRadius: "0px", cursor: "pointer", fontSize: "0.78rem", fontWeight: 600,
+                            transition: "background 0.15s", fontFamily: 'inherit',
+                          }}
+                            onMouseEnter={e => e.currentTarget.style.background = "rgba(193, 68, 14, 0.12)"}
+                            onMouseLeave={e => e.currentTarget.style.background = "var(--primary-subtle)"}>
+                            Edit
+                          </button>
+                          <button onClick={() => handleDelete(note._id)} style={{
+                            background: "rgba(239,68,68,0.06)", color: "#ef4444",
+                            border: "1px solid rgba(239,68,68,0.15)", padding: "0.35rem 0.75rem",
+                            borderRadius: "0px", cursor: "pointer", fontSize: "0.78rem", fontWeight: 600,
+                            transition: "background 0.15s", fontFamily: 'inherit',
+                          }}
+                            onMouseEnter={e => e.currentTarget.style.background = "rgba(239,68,68,0.12)"}
+                            onMouseLeave={e => e.currentTarget.style.background = "rgba(239,68,68,0.06)"}>
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Bottom Row inside card */}
+            <div style={{ textAlign: "center", padding: "1.25rem", borderTop: "1px solid var(--border)" }}>
+              <Link to="/upload" style={{ color: "var(--primary)", fontSize: "0.85rem", fontWeight: 600, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.25rem" }}
+                onMouseEnter={e => e.currentTarget.style.textDecoration = "underline"}
+                onMouseLeave={e => e.currentTarget.style.textDecoration = "none"}>
+                You've uploaded {notes.length} {notes.length === 1 ? 'note' : 'notes'}. Upload more to help others →
+              </Link>
+            </div>
           </div>
         )}
+
+        {/* Bottom Widgets Row */}
+        <div style={{
+          display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem",
+          marginTop: "2rem"
+        }}>
+          {/* Quick Links Card */}
+          <div style={{
+            background: "var(--bg-card)", border: "1px solid var(--border)",
+            borderRadius: "0px", padding: "2rem", boxShadow: "var(--shadow-sm)",
+            display: "flex", flexDirection: "column", gap: "1.25rem"
+          }}>
+            <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text)", margin: 0 }}>Quick links</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+              <Link to="/upload" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "var(--primary)", textDecoration: "none", fontWeight: 600, fontSize: "0.9rem" }}
+                onMouseEnter={e => e.currentTarget.style.opacity = 0.8}
+                onMouseLeave={e => e.currentTarget.style.opacity = 1}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                Upload a note
+              </Link>
+              <Link to="/notes" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "var(--primary)", textDecoration: "none", fontWeight: 600, fontSize: "0.9rem" }}
+                onMouseEnter={e => e.currentTarget.style.opacity = 0.8}
+                onMouseLeave={e => e.currentTarget.style.opacity = 1}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Browse notes
+              </Link>
+              <Link to="/profile" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "var(--primary)", textDecoration: "none", fontWeight: 600, fontSize: "0.9rem" }}
+                onMouseEnter={e => e.currentTarget.style.opacity = 0.8}
+                onMouseLeave={e => e.currentTarget.style.opacity = 1}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                Edit profile
+              </Link>
+            </div>
+          </div>
+
+          {/* Contributor Progress Card */}
+          <div style={{
+            background: "var(--bg-card)", border: "1px solid var(--border)",
+            borderRadius: "0px", padding: "2rem", boxShadow: "var(--shadow-sm)",
+            display: "flex", flexDirection: "column", gap: "1.25rem"
+          }}>
+            <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text)", margin: 0 }}>Contributor progress</h3>
+            <div>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", fontWeight: 600, color: "var(--text)", marginBottom: "0.5rem" }}>
+                <span>{notes.length} of 5 notes to reach <span style={{ color: "var(--primary)" }}>Contributor</span> rank</span>
+              </div>
+              {/* Progress bar container */}
+              <div style={{ width: "100%", height: "8px", background: "var(--bg-card-2)", borderRadius: "999px", overflow: "hidden", marginBottom: "0.75rem" }}>
+                <div style={{ width: `${Math.min((notes.length / 5) * 100, 100)}%`, height: "100%", background: "var(--primary)", borderRadius: "999px" }} />
+              </div>
+              <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--text-muted)", fontWeight: 500 }}>
+                Upload {Math.max(5 - notes.length, 0)} more notes to unlock your contributor badge.
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      {/* ── Edit Modal ── */}
+      {/* Edit Modal */}
       {editNote && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 9999,
-          background: "rgba(0,0,0,0.8)", backdropFilter: "blur(8px)",
+          background: "rgba(28,20,16,0.6)", backdropFilter: "blur(6px)",
           display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem",
         }} onClick={closeEdit}>
-          <div className="glass-panel fade-in" style={{
-            width: "100%", maxWidth: "520px", borderRadius: "20px", padding: "2.5rem",
+          <div style={{
+            background: "var(--bg-card)", border: "1px solid var(--border)",
+            width: "100%", maxWidth: "480px", borderRadius: "0px", padding: "2rem",
             position: "relative",
           }} onClick={e => e.stopPropagation()}>
-            {/* top accent */}
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "linear-gradient(90deg, #e95e86, #6366f1)", borderRadius: "20px 20px 0 0" }} />
-            <h3 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#f1f5f9", marginBottom: "1.75rem" }}>
-              Edit <span style={{ color: "#e95e86" }}>Note</span>
+            <h3 style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--text)", marginBottom: "1.5rem" }}>
+              Edit Note
             </h3>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {[
                 { label: "Title *", key: "title", placeholder: "Note title" },
                 { label: "Subject", key: "subject", placeholder: "e.g. Computer Science (CSE)" },
                 { label: "University", key: "university", placeholder: "e.g. IIT Delhi" },
               ].map(f => (
                 <div key={f.key}>
-                  <label style={{ display: "block", marginBottom: "0.45rem", color: "#94a3b8", fontSize: "0.83rem", fontWeight: 500 }}>{f.label}</label>
+                  <label className="form-label">{f.label}</label>
                   <input
                     value={editForm[f.key]}
                     onChange={e => setEditForm(p => ({ ...p, [f.key]: e.target.value }))}
                     placeholder={f.placeholder}
-                    style={{ width: "100%", padding: "0.8rem 1rem", borderRadius: "10px", background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.1)", color: "white", outline: "none", fontSize: "0.9rem", fontFamily: "inherit" }}
-                    onFocus={e => e.target.style.borderColor = "#e95e86"}
-                    onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                    className="form-input"
                   />
                 </div>
               ))}
               <div>
-                <label style={{ display: "block", marginBottom: "0.45rem", color: "#94a3b8", fontSize: "0.83rem", fontWeight: 500 }}>Description</label>
+                <label className="form-label">Description</label>
                 <textarea
                   value={editForm.description}
                   onChange={e => setEditForm(p => ({ ...p, description: e.target.value }))}
                   placeholder="What topics does this note cover?"
                   rows={3}
-                  style={{ width: "100%", padding: "0.8rem 1rem", borderRadius: "10px", background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.1)", color: "white", outline: "none", fontSize: "0.9rem", resize: "vertical", fontFamily: "inherit" }}
-                  onFocus={e => e.target.style.borderColor = "#e95e86"}
-                  onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                  className="form-input"
+                  style={{ resize: "vertical" }}
                 />
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: "0.8rem", marginTop: "1.75rem" }}>
-              <button onClick={closeEdit} style={{ flex: 1, padding: "0.8rem", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", borderRadius: "10px", cursor: "pointer", fontWeight: 600, fontSize: "0.9rem" }}>
+            <div style={{ display: "flex", gap: "0.6rem", marginTop: "1.5rem" }}>
+              <button onClick={closeEdit} style={{ flex: 1, padding: "0.65rem", background: "rgba(28,20,16,0.03)", border: "1px solid rgba(28,20,16,0.05)", color: "var(--text-muted)", borderRadius: "0px", cursor: "pointer", fontWeight: 600, fontSize: "0.85rem", fontFamily: 'inherit' }}>
                 Cancel
               </button>
               <button onClick={handleEditSave} disabled={editLoading} style={{
-                flex: 2, padding: "0.8rem", background: editLoading ? "#334155" : "#e95e86",
-                border: "none", color: "white", borderRadius: "10px",
-                cursor: editLoading ? "not-allowed" : "pointer", fontWeight: 700, fontSize: "0.9rem",
-                boxShadow: editLoading ? "none" : "0 4px 14px rgba(233,94,134,0.4)",
+                flex: 2, padding: "0.65rem", background: editLoading ? "var(--border)" : "var(--primary)",
+                border: "none", color: "white", borderRadius: "0px",
+                cursor: editLoading ? "not-allowed" : "pointer", fontWeight: 600, fontSize: "0.85rem",
+                fontFamily: 'inherit',
               }}>
                 {editLoading ? "Saving..." : "Save Changes"}
               </button>

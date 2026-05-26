@@ -1,176 +1,203 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import API from "../../services/api";
 
-const STATIC_UNIS = [
-  "IIM Ahmedabad", "IIT Delhi", "IIT Bombay", "G.L Bajaj",
-  "NMIMS", "Amity University", "LPU", "Sharda University",
-  "BITS Pilani", "VIT Vellore", "Delhi University", "NIT Trichy",
-];
-
 export default function InstitutionsSection() {
   const navigate = useNavigate();
-  const [searchInput, setSearchInput] = useState("");
-  const [uniList, setUniList] = useState(STATIC_UNIS);
-  const [focused, setFocused] = useState(false);
+  const [stats, setStats] = useState({ totalNotes: 43 });
 
   useEffect(() => {
-    API.get('/api/universities')
+    API.get('/api/stats')
       .then(res => {
-        const uniqueNames = [...new Set(res.data.map(u => u.name))];
-        if (uniqueNames.length) setUniList(uniqueNames);
+        if (res.data && res.data.totalNotes) {
+          setStats({ totalNotes: res.data.totalNotes });
+        }
       })
       .catch(() => {});
   }, []);
 
-  const handleSearch = () => {
-    if (searchInput.trim()) {
-      navigate(`/notes?university=${encodeURIComponent(searchInput.trim())}`);
+  const sampleNotes = [
+    {
+      code: "CS201",
+      title: "Data Structures & Algorithms",
+      meta: "IIM Ahmedabad · Sem 3",
+      authorInitials: "RG",
+      authorBg: "#2563eb",
+      authorName: "Rohan G.",
+      subjectQuery: "Data Structures & Algorithms"
+    },
+    {
+      code: "CS303",
+      title: "DBMS & SQL Quick Notes",
+      meta: "G.L Bajaj · Sem 5",
+      authorInitials: "AK",
+      authorBg: "#16a34a",
+      authorName: "Aman K.",
+      subjectQuery: "Database Management"
+    },
+    {
+      code: "APT",
+      title: "Aptitude & Critical Thinking",
+      meta: "IIT Bhubaneswar · Sem 2",
+      authorInitials: "ES",
+      authorBg: "var(--primary)",
+      authorName: "Eshika S.",
+      subjectQuery: "Aptitude & Critical Thinking"
     }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') handleSearch();
-  };
+  ];
 
   return (
-    <div className="container" style={{ marginTop: "7rem", textAlign: "center" }}>
-      {/* Section header */}
-      <div className="badge badge-primary" style={{ marginBottom: "1rem" }}>🏛️ Top Institutions</div>
-      <h2 style={{
-        fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
-        fontWeight: 800,
-        maxWidth: "720px",
-        margin: "0 auto 1rem",
-        letterSpacing: "-0.5px",
-        lineHeight: 1.2,
-      }}>
-        Notes from India's{" "}
-        <span style={{ color: "#e95e86" }}>Premier Institutions</span>
-      </h2>
-      <p style={{ color: "#64748b", maxWidth: "500px", margin: "0 auto 3rem", fontSize: "1rem", lineHeight: 1.7 }}>
-        From IITs to private universities — find notes curated by top-performing students.
-      </p>
-
-      {/* Search bar */}
+    <div className="container" style={{ marginTop: "6rem", marginBottom: "4rem" }}>
+      {/* Header Row */}
       <div style={{
-        maxWidth: "560px",
-        margin: "0 auto 3rem",
         display: "flex",
-        alignItems: "center",
-        background: focused ? "rgba(233,94,134,0.05)" : "rgba(255,255,255,0.04)",
-        border: `1px solid ${focused ? "rgba(233,94,134,0.5)" : "rgba(255,255,255,0.1)"}`,
-        borderRadius: "999px",
-        padding: "0.4rem 0.6rem 0.4rem 1.2rem",
-        transition: "all 0.3s ease",
-        boxShadow: focused ? "0 0 0 3px rgba(233,94,134,0.08)" : "none",
+        justifyContent: "space-between",
+        alignItems: "flex-end",
+        marginBottom: "2.5rem",
+        flexWrap: "wrap",
+        gap: "1.5rem"
       }}>
-        <svg style={{ color: focused ? "#e95e86" : "#475569", marginRight: "0.8rem", flexShrink: 0, transition: "color 0.3s" }}
-          width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-        <input
-          list="uni-home-options"
-          type="text"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          placeholder="Search institution, subject..."
-          style={{
-            border: "none", outline: "none", width: "100%",
-            color: "#f1f5f9", fontSize: "0.95rem",
-            background: "transparent", fontFamily: "inherit"
-          }}
-        />
-        <datalist id="uni-home-options">
-          {uniList.map((u, idx) => <option key={idx} value={u} />)}
-        </datalist>
-        <button
-          onClick={handleSearch}
-          className="btn btn-primary"
-          style={{ padding: "0.6rem 1.4rem", fontSize: "0.85rem", flexShrink: 0 }}
+        <div style={{ textAlign: "left" }}>
+          <p style={{
+            fontSize: "0.72rem",
+            fontWeight: 700,
+            color: "var(--text-muted)",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            marginBottom: "0.6rem"
+          }}>
+            REAL NOTES, REAL STUDENTS
+          </p>
+          <h2 style={{
+            fontSize: "clamp(1.8rem, 3.5vw, 2.2rem)",
+            fontWeight: 800,
+            margin: 0,
+            color: "var(--text)",
+            letterSpacing: "-0.5px"
+          }}>
+            What's on the platform right now
+          </h2>
+        </div>
+        <Link to="/notes" style={{
+          color: "var(--primary)",
+          fontSize: "0.9rem",
+          fontWeight: 600,
+          textDecoration: "none",
+          transition: "color 0.15s"
+        }}
+          onMouseEnter={e => e.currentTarget.style.color = "var(--primary-hover)"}
+          onMouseLeave={e => e.currentTarget.style.color = "var(--primary)"}
         >
-          Search
-        </button>
+          Browse all {stats.totalNotes} →
+        </Link>
       </div>
 
-      {/* Grid */}
+      {/* Grid containing the cards */}
       <div style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
-        gap: "1rem",
-        textAlign: "left"
+        gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+        gap: "1.25rem"
       }}>
-        {STATIC_UNIS.map((name, i) => (
-          <UniCard key={i} name={name} index={i} />
+        {sampleNotes.map((note, i) => (
+          <div
+            key={i}
+            className="card"
+            style={{
+              padding: "1.5rem",
+              borderRadius: "0px",
+              background: "var(--bg-card)",
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+              cursor: "pointer"
+            }}
+            onClick={() => navigate(`/notes?subject=${encodeURIComponent(note.subjectQuery)}`)}
+          >
+            {/* Header Badge */}
+            <div style={{ marginBottom: "1rem" }}>
+              <span style={{
+                background: "var(--primary-subtle)",
+                border: "1px solid rgba(193, 68, 14, 0.15)",
+                color: "var(--primary)",
+                padding: "3px 8px",
+                borderRadius: "0px",
+                fontSize: "0.72rem",
+                fontWeight: 700
+              }}>
+                {note.code}
+              </span>
+            </div>
+
+            {/* Note Title */}
+            <h3 style={{
+              fontSize: "1.1rem",
+              fontWeight: 700,
+              color: "var(--text)",
+              margin: "0 0 0.4rem 0",
+              lineHeight: 1.35,
+              flex: 1
+            }}>
+              {note.title}
+            </h3>
+
+            {/* Info Subtext */}
+            <p style={{
+              color: "var(--text-muted)",
+              fontSize: "0.82rem",
+              margin: "0 0 1.5rem 0"
+            }}>
+              {note.meta}
+            </p>
+
+            {/* Footer row */}
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              borderTop: "1px solid var(--border)",
+              paddingTop: "1rem",
+              marginTop: "auto"
+            }}>
+              {/* Contributor */}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <div style={{
+                  width: "26px",
+                  height: "26px",
+                  borderRadius: "0px",
+                  background: note.authorBg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "0.68rem",
+                  fontWeight: 700,
+                  color: "#ffffff"
+                }}>
+                  {note.authorInitials}
+                </div>
+                <span style={{
+                  fontSize: "0.82rem",
+                  color: "var(--text-muted)",
+                  fontWeight: 500
+                }}>
+                  {note.authorName}
+                </span>
+              </div>
+
+              {/* Action Button */}
+              <span style={{
+                color: "var(--primary)",
+                fontSize: "0.82rem",
+                fontWeight: 600,
+                display: "flex",
+                alignItems: "center",
+                gap: "0.25rem"
+              }}>
+                ↓ PDF
+              </span>
+            </div>
+          </div>
         ))}
       </div>
-    </div>
-  );
-}
-
-const uniColors = [
-  "#e95e86", "#6366f1", "#f59e0b", "#10b981",
-  "#3b82f6", "#8b5cf6", "#ef4444", "#14b8a6",
-  "#f97316", "#06b6d4", "#84cc16", "#ec4899",
-];
-
-function UniCard({ name, index }) {
-  const navigate = useNavigate();
-  const [hovered, setHovered] = useState(false);
-  const color = uniColors[index % uniColors.length];
-  const initials = name.split(" ").map(w => w[0]).join("").substring(0, 2).toUpperCase();
-
-  return (
-    <div
-      onClick={() => navigate(`/notes?university=${encodeURIComponent(name)}`)}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: hovered ? `${color}12` : "rgba(255,255,255,0.03)",
-        border: `1px solid ${hovered ? color + "44" : "rgba(255,255,255,0.06)"}`,
-        borderRadius: "16px",
-        padding: "1.25rem 1rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "0.75rem",
-        cursor: "pointer",
-        transition: "all 0.25s ease",
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-        boxShadow: hovered ? `0 12px 30px ${color}22` : "none",
-        minHeight: "110px",
-      }}
-    >
-      {/* Avatar */}
-      <div style={{
-        width: "44px", height: "44px",
-        borderRadius: "12px",
-        background: `${color}20`,
-        border: `1px solid ${color}40`,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        color,
-        fontSize: "0.95rem",
-        fontWeight: 800,
-        transition: "all 0.25s ease",
-        boxShadow: hovered ? `0 0 16px ${color}40` : "none",
-      }}>
-        {initials}
-      </div>
-      <p style={{
-        margin: 0,
-        fontSize: "0.8rem",
-        fontWeight: 600,
-        color: hovered ? "#f1f5f9" : "#94a3b8",
-        textAlign: "center",
-        lineHeight: 1.3,
-        transition: "color 0.25s ease"
-      }}>
-        {name}
-      </p>
     </div>
   );
 }

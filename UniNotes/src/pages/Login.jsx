@@ -49,195 +49,161 @@ function Login() {
     }
   };
 
+  const handleGoogleLogin = () => {
+    showToast("Google Authentication integration coming soon!", "info");
+  };
+
   return (
     <div style={{
-      minHeight: '100vh', width: '100vw', display: 'flex', justifyContent: 'center', alignItems: 'center',
-      backgroundColor: '#000000', position: 'fixed', top: 0, left: 0, zIndex: 1000, overflowY: 'auto', fontFamily: 'Inter, sans-serif',
-      padding: '2rem 1rem'
+      minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column',
+      justifyContent: 'center', alignItems: 'center', backgroundColor: 'var(--bg)',
+      fontFamily: 'Inter, sans-serif', position: 'relative', padding: '5rem 1rem 3rem'
     }}>
-      {renderFloatingIcons()}
-
-      <Link to="/home" style={{ position: 'absolute', top: '2rem', left: '2rem', color: '#a1a1aa', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', zIndex: 10, fontWeight: 500, transition: 'color 0.2s' }} onMouseOver={(e) => e.target.style.color = 'white'} onMouseOut={(e) => e.target.style.color = '#a1a1aa'}>
-        ← Back to Home
-      </Link>
-
+      {/* Top Header Bar */}
       <div style={{
-        width: '100%', maxWidth: '420px', background: 'rgba(30, 30, 35, 0.85)', backdropFilter: 'blur(20px)',
-        border: '1px solid #e95e86', borderRadius: '24px', padding: '3rem 2.5rem',
-        boxShadow: '0 0 40px rgba(233, 94, 134, 0.15), 0 25px 50px -12px rgba(0, 0, 0, 0.8)', zIndex: 1, color: 'white', display: 'flex', flexDirection: 'column',
-        margin: '2rem 1rem'
+        position: 'absolute', top: 0, left: 0, right: 0, height: '4.5rem',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        padding: '0 2rem', borderBottom: '1px solid var(--border)', zIndex: 10
+      }}>
+        <Link to="/home" style={{ textDecoration: 'none' }}>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0 }}>
+            <span style={{ color: 'var(--primary)' }}>Uni</span>
+            <span style={{ color: 'var(--accent)' }}>Notes</span>
+          </h2>
+        </Link>
+        <span style={{ fontSize: '0.88rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+          Don't have an account?{' '}
+          <Link to="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>
+            Sign up free
+          </Link>
+        </span>
+      </div>
+
+      {/* Subtle background gradient */}
+      <div style={{
+        position: 'absolute', top: '15%', left: '30%',
+        width: '500px', height: '500px',
+        background: 'radial-gradient(circle, rgba(193, 68, 14, 0.04) 0%, transparent 65%)',
+        pointerEvents: 'none',
+      }} />
+
+      {/* Main Form Container */}
+      <div style={{
+        width: '100%', maxWidth: '400px', background: 'var(--bg-card)',
+        border: '1px solid var(--border)', borderRadius: '0px', padding: '2.5rem 2rem',
+        zIndex: 1, color: 'var(--text)', display: 'flex', flexDirection: 'column',
+        boxShadow: 'var(--shadow-lg)'
       }}>
         {isForgotPassword ? (
           <>
-            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              <h1 style={{ fontSize: '2rem', fontWeight: 800, margin: '0 0 0.5rem 0', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.2rem' }}>
-                <span style={{ color: '#e95e86' }}>Reset</span>Password
+            <div style={{ marginBottom: '1.75rem', textAlign: 'center' }}>
+              <h1 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.35rem 0', color: 'var(--text)' }}>
+                Reset password
               </h1>
-              <p style={{ color: '#a1a1aa', margin: 0, fontSize: '0.95rem' }}>Enter your email to receive a recovery link.</p>
+              <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.88rem' }}>Enter your email to receive a recovery link.</p>
             </div>
 
-            <form onSubmit={handleForgotPassword} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 500, color: '#e4e4e7' }}>Email Address</label>
-                <input type="email" placeholder="you@university.edu" value={email} onChange={(e) => setEmail(e.target.value)} required style={inputStyle} onFocus={handleFocus} onBlur={handleBlur} />
+            <form onSubmit={handleForgotPassword} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+              <div>
+                <label className="form-label">Email address</label>
+                <input type="email" placeholder="you@university.edu" value={email} onChange={(e) => setEmail(e.target.value)} required className="form-input" />
               </div>
 
-              <button type="submit" disabled={loading} style={{ width: '100%', padding: '0.875rem', background: loading ? '#52525b' : '#e95e86', color: 'white', border: 'none', borderRadius: '10px', fontSize: '1rem', fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', marginTop: '0.5rem', transition: 'background 0.2s, transform 0.1s' }} onMouseOver={(e) => !loading && (e.target.style.background = '#d94872')} onMouseOut={(e) => !loading && (e.target.style.background = '#e95e86')} onMouseDown={(e) => !loading && (e.target.style.transform = 'scale(0.98)')} onMouseUp={(e) => !loading && (e.target.style.transform = 'scale(1)')}>
-                {loading ? 'Sending link...' : 'Send Recovery Link'}
+              <button type="submit" disabled={loading} style={btnStyle(loading)}>
+                {loading ? 'Sending...' : 'Send Recovery Link'}
               </button>
 
-              <button type="button" onClick={() => setIsForgotPassword(false)} style={{ background: 'none', border: 'none', color: '#a1a1aa', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 500, transition: 'color 0.2s', marginTop: '0.5rem' }} onMouseOver={(e) => e.target.style.color = 'white'} onMouseOut={(e) => e.target.style.color = '#a1a1aa'}>
-                Back to Sign In
+              <button type="button" onClick={() => setIsForgotPassword(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 500, transition: 'color 0.15s', marginTop: '0.25rem' }} onMouseOver={(e) => e.target.style.color = 'var(--text)'} onMouseOut={(e) => e.target.style.color = 'var(--text-muted)'}>
+                Back to sign in
               </button>
             </form>
           </>
         ) : (
           <>
-            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              <h1 style={{ fontSize: '2rem', fontWeight: 800, margin: '0 0 0.5rem 0', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.2rem' }}>
-                <span style={{ color: '#e95e86' }}>Uni</span>Notes
+            <div style={{ marginBottom: '1.75rem', textAlign: 'center' }}>
+              <h1 style={{ fontSize: '1.75rem', fontWeight: 800, margin: '0 0 0.35rem 0', color: 'var(--text)', letterSpacing: '-0.3px' }}>
+                Welcome back
               </h1>
-              <p style={{ color: '#a1a1aa', margin: 0, fontSize: '0.95rem' }}>Welcome back! Please enter your details.</p>
+              <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.88rem' }}>Log in to access your notes and uploads.</p>
             </div>
 
-            <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 500, color: '#e4e4e7' }}>Email Address</label>
-                <input type="email" placeholder="you@university.edu" value={email} onChange={(e) => setEmail(e.target.value)} required style={inputStyle} onFocus={handleFocus} onBlur={handleBlur} />
+            {/* Google OAuth Button */}
+            <button type="button" onClick={handleGoogleLogin} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem',
+              width: '100%', padding: '0.75rem', background: 'var(--bg)', border: '1px solid var(--border)',
+              borderRadius: '0px', fontSize: '0.9rem', fontWeight: 600, color: 'var(--text)',
+              cursor: 'pointer', transition: 'background 0.15s', fontFamily: 'inherit'
+            }} onMouseOver={(e) => e.currentTarget.style.background = 'var(--bg-card-2)'} onMouseOut={(e) => e.currentTarget.style.background = 'var(--bg)'}>
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.54 14.98 1 12 1 7.35 1 3.37 3.65 1.41 7.55l3.84 2.98C6.18 7.23 8.87 5.04 12 5.04z" />
+                <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.43c-.28 1.44-1.09 2.67-2.3 3.49l3.58 2.78c2.1-1.94 3.3-4.8 3.3-8.42z" />
+                <path fill="#FBBC05" d="M5.25 14.53c-.24-.72-.38-1.49-.38-2.28 0-.79.14-1.56.38-2.28L1.41 7.27C.51 9.07 0 11.08 0 13.2c0 2.12.51 4.13 1.41 5.93l3.84-2.93z" />
+                <path fill="#34A853" d="M12 23c3.24 0 5.97-1.08 7.96-2.91l-3.58-2.78c-1 .67-2.28 1.07-3.78 1.07-3.13 0-5.82-2.19-6.76-5.49L1 16.82C2.96 20.72 6.94 23 12 23z" />
+              </svg>
+              Continue with Google
+            </button>
+
+            {/* Divider */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: '1.25rem 0', color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 500 }}>
+              <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
+              or
+              <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
+            </div>
+
+            <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+              <div>
+                <label className="form-label">Email address</label>
+                <input type="email" placeholder="you@university.edu" value={email} onChange={(e) => setEmail(e.target.value)} required className="form-input" />
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 500, color: '#e4e4e7' }}>Password</label>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                  <label className="form-label" style={{ margin: 0 }}>Password</label>
+                  <button type="button" onClick={() => setIsForgotPassword(true)} style={{ background: 'none', border: 'none', fontSize: '0.82rem', color: 'var(--primary)', cursor: 'pointer', padding: 0, fontWeight: 500 }}>
+                    Forgot password?
+                  </button>
+                </div>
                 <div style={{ position: 'relative' }}>
-                  <input type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required style={{ ...inputStyle, paddingRight: '4rem' }} onFocus={handleFocus} onBlur={handleBlur} />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#a1a1aa', cursor: 'pointer', padding: 0 }}>
-                    {showPassword ? 'Hide' : 'Show'}
+                  <input type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required className="form-input" style={{ paddingRight: '3.5rem' }} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} style={{
+                    position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)',
+                    background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer',
+                    padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center'
+                  }}>
+                    {showPassword ? (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    )}
                   </button>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: '#a1a1aa', cursor: 'pointer' }}>
-                  <input type="checkbox" style={{ accentColor: '#e95e86', cursor: 'pointer', width: '16px', height: '16px' }} /> Remember me
-                </label>
-                <button type="button" onClick={() => setIsForgotPassword(true)} style={{ background: 'none', border: 'none', fontSize: '0.85rem', color: '#e95e86', textDecoration: 'none', cursor: 'pointer', padding: 0 }}>Forgot password?</button>
-              </div>
-
-              <button type="submit" disabled={loading} style={{ width: '100%', padding: '0.875rem', background: loading ? '#52525b' : '#e95e86', color: 'white', border: 'none', borderRadius: '10px', fontSize: '1rem', fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', marginTop: '0.5rem', transition: 'background 0.2s, transform 0.1s' }} onMouseOver={(e) => !loading && (e.target.style.background = '#d94872')} onMouseOut={(e) => !loading && (e.target.style.background = '#e95e86')} onMouseDown={(e) => !loading && (e.target.style.transform = 'scale(0.98)')} onMouseUp={(e) => !loading && (e.target.style.transform = 'scale(1)')}>
-                {loading ? 'Signing in...' : 'Sign in'}
+              <button type="submit" disabled={loading} style={btnStyle(loading)}>
+                {loading ? 'Logging in...' : 'Log in'}
               </button>
             </form>
 
-            <p style={{ textAlign: 'center', marginTop: '2rem', fontSize: '0.9rem', color: '#a1a1aa' }}>
-              Don't have an account? <Link to="/register" style={{ color: 'white', textDecoration: 'none', fontWeight: 600 }}>Sign up</Link>
+            <p style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+              New here? <Link to="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>Create a free account</Link>
             </p>
           </>
         )}
       </div>
 
-      <style>{`
-        @keyframes float {
-          0% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-          100% { transform: translate(0px, 0px) scale(1); }
-        }
-      `}</style>
+      {/* Footer text */}
+      <span style={{ position: 'absolute', bottom: '2rem', fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+        By logging in you agree to <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Terms</span> and <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Privacy Policy</span>
+      </span>
     </div>
   );
 }
 
-const inputStyle = {
-  width: '100%', background: 'rgba(0, 0, 0, 0.3)', border: '1px solid rgba(255, 255, 255, 0.1)',
-  borderRadius: '10px', padding: '0.875rem 1rem', color: 'white', outline: 'none',
-  transition: 'border-color 0.2s', boxSizing: 'border-box'
-};
-
-const handleFocus = (e) => e.target.style.borderColor = '#e95e86';
-const handleBlur = (e) => e.target.style.borderColor = 'rgba(255,255,255,0.1)';
-
-const renderFloatingIcons = () => {
-  return (
-    <>
-      <div style={{ position: 'absolute', top: '15%', left: '25%', color: '#818cf8', opacity: 0.8 }}>
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" />
-        </svg>
-      </div>
-      <div style={{ position: 'absolute', top: '40%', right: '18%', color: '#fca5a5', opacity: 0.8, transform: 'rotate(15deg)' }}>
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-        </svg>
-      </div>
-      <div style={{ position: 'absolute', top: '35%', left: '15%', color: '#93c5fd', opacity: 0.8, transform: 'rotate(-10deg)' }}>
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M9 18h6" />
-          <path d="M10 22h4" />
-          <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.45.62 2.84 1.5 3.5.76.76 1.23 1.52 1.41 2.5" />
-        </svg>
-      </div>
-      <div style={{ position: 'absolute', bottom: '30%', left: '30%', color: '#fcd34d', opacity: 0.8, transform: 'rotate(45deg)' }}>
-        <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 19l7-7 3 3-7 7-3-3z" />
-          <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
-          <path d="M2 2l7.586 7.586" />
-          <circle cx="11" cy="11" r="2" />
-        </svg>
-      </div>
-      <div style={{ position: 'absolute', bottom: '25%', right: '35%', color: '#fb923c', opacity: 0.8, transform: 'rotate(-15deg)' }}>
-        <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-        </svg>
-      </div>
-      <div style={{ position: 'absolute', bottom: '20%', right: '15%', color: '#8b5cf6', opacity: 0.9 }}>
-        <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2v4" />
-          <path d="M12 18v4" />
-          <path d="M4.93 4.93l2.83 2.83" />
-          <path d="M16.24 16.24l2.83 2.83" />
-          <path d="M2 12h4" />
-          <path d="M18 12h4" />
-          <path d="M4.93 19.07l2.83-2.83" />
-          <path d="M16.24 7.76l2.83-2.83" />
-        </svg>
-      </div>
-      <div style={{ position: 'absolute', bottom: '15%', left: '15%', color: '#fdba74', opacity: 0.8, transform: 'rotate(-30deg)' }}>
-        <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-        </svg>
-      </div>
-      <div style={{ position: 'absolute', bottom: '10%', right: '30%', color: '#818cf8', opacity: 0.8, transform: 'rotate(20deg)' }}>
-        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M15 4V2" />
-          <path d="M15 16v-2" />
-          <path d="M8 9h2" />
-          <path d="M20 9h2" />
-          <path d="M17.8 11.8L19 13" />
-          <path d="M15 9h0" />
-          <path d="M17.8 6.2L19 5" />
-          <path d="M3 21l9-9" />
-          <path d="M12.2 6.2L11 5" />
-        </svg>
-      </div>
-      <div style={{ position: 'absolute', top: '25%', left: '8%', color: '#a78bfa', opacity: 0.8, transform: 'rotate(15deg)' }}>
-        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 19l7-7 3 3-7 7-3-3z" />
-          <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
-          <path d="M2 2l7.586 7.586" />
-        </svg>
-      </div>
-      <div style={{ position: 'absolute', bottom: '10%', right: '5%', color: '#a78bfa', opacity: 0.7, transform: 'rotate(15deg)' }}>
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M9 18h6" />
-          <path d="M10 22h4" />
-          <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.45.62 2.84 1.5 3.5.76.76 1.23 1.52 1.41 2.5" />
-        </svg>
-      </div>
-    </>
-  );
-};
+const btnStyle = (loading) => ({
+  width: '100%', padding: '0.75rem', background: loading ? 'var(--bg-card-2)' : 'var(--primary)',
+  color: 'white', border: 'none', borderRadius: '0px', fontSize: '0.95rem',
+  fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', marginTop: '0.25rem',
+  transition: 'background 0.15s', fontFamily: 'inherit',
+});
 
 export default Login;
